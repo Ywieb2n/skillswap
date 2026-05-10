@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Skill Swap JO – University Platform</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=Playfair+Display:wght@700&family=Space+Mono:wght@400;700&display=swap');
+
+  :root {
+    --cream: #FAF6EF;
+    --ink: #1A1A2E;
+    --teal: #0A7075;
+    --teal-light: #0D9E9E;
+    --amber: #E8A838;
+    --amber-soft: #FFF3D4;
+    --rose: #C96868;
+    --rose-soft: #FFF0F0;
+    --sage: #6B8F71;
+    --sage-soft: #EEF5EE;
+    --card-bg: #FFFFFF;
+    --border: #E8E0D0;
+    --text-muted: #7A7060;
+    --shadow: 0 4px 24px rgba(26,26,46,0.08);
+    --shadow-hover: 0 12px 40px rgba(26,26,46,0.15);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2rem;
+    height: 64px;
+    background: rgba(250,246,239,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.1rem; font-weight: 700;
+    color: var(--teal);
+    letter-spacing: -0.5px;
+  }
+  .nav-links {
+    display: flex; gap: 1.5rem; list-style: none;
+  }
+  .nav-links a {
+    font-size: 0.88rem; font-weight: 500; color: var(--ink);
+    text-decoration: none; opacity: 0.75; transition: opacity 0.2s;
+  }
+  .nav-links a:hover { opacity: 1; color: var(--teal); }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 6rem 2rem 4rem;
+    background:
+      radial-gradient(ellipse 70% 60% at 50% 0%, rgba(10,112,117,0.10) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 40% at 90% 80%, rgba(232,168,56,0.12) 0%, transparent 60%),
+      var(--cream);
+    position: relative; overflow: hidden;
+  }
+  .hero-tag {
+    display: inline-block;
+    background: var(--teal);
+    color: #fff;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem; letter-spacing: 2px;
+    padding: 0.35rem 1rem; border-radius: 999px;
+    margin-bottom: 1.5rem;
+    animation: fadeDown 0.6s ease both;
+  }
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 700; line-height: 1.05;
+    color: var(--ink);
+    animation: fadeDown 0.7s 0.1s ease both;
+  }
+  .hero-title span { color: var(--teal); }
+  .hero-subtitle-ar {
+    font-size: clamp(1.1rem, 3vw, 1.5rem);
+    font-weight: 700; color: var(--teal);
+    margin-top: 1rem;
+    animation: fadeDown 0.7s 0.2s ease both;
+  }
+  .hero-desc {
+    max-width: 600px; margin: 1.2rem auto 0;
+    font-size: 1rem; line-height: 1.85; color: var(--text-muted);
+    animation: fadeDown 0.7s 0.3s ease both;
+  }
+  .btn-start {
+    display: inline-block; margin-top: 2.5rem;
+    background: var(--teal); color: #fff;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.9rem; font-weight: 700; letter-spacing: 1px;
+    padding: 0.9rem 2.6rem; border-radius: 999px;
+    text-decoration: none; border: none; cursor: pointer;
+    transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+    box-shadow: 0 4px 20px rgba(10,112,117,0.30);
+    animation: fadeDown 0.7s 0.4s ease both;
+  }
+  .btn-start:hover {
+    background: var(--teal-light);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(10,112,117,0.35);
+  }
+  .hero-deco {
+    position: absolute; border-radius: 50%;
+    background: radial-gradient(circle, rgba(10,112,117,0.12), transparent 70%);
+    pointer-events: none;
+  }
+  .hero-deco.a { width: 500px; height: 500px; top: -150px; right: -150px; }
+  .hero-deco.b { width: 350px; height: 350px; bottom: -100px; left: -100px; background: radial-gradient(circle, rgba(232,168,56,0.13), transparent 70%); }
+
+  /* ── SECTION SHELL ── */
+  section { padding: 5rem 2rem; }
+  .section-inner { max-width: 1100px; margin: 0 auto; }
+  .section-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--teal); margin-bottom: 0.6rem;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 700; color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+  .section-line {
+    width: 48px; height: 3px;
+    background: var(--amber);
+    border-radius: 2px; margin-bottom: 2.5rem;
+  }
+
+  /* ── UNIVERSITIES ── */
+  #universities { background: #fff; }
+  .coming-soon-card {
+    display: flex; align-items: center; gap: 1.2rem;
+    background: var(--amber-soft);
+    border: 1.5px dashed var(--amber);
+    border-radius: 14px; padding: 1.4rem 1.8rem;
+    margin-bottom: 2.5rem;
+    font-weight: 700; font-size: 1.05rem; color: var(--ink);
+  }
+  .coming-soon-card .icon { font-size: 2rem; }
+  .coming-soon-badge {
+    margin-right: auto;
+    background: var(--amber); color: #fff;
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 1px;
+    padding: 0.2rem 0.7rem; border-radius: 999px;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .faculty-card {
+    background: var(--card-bg);
+    border: 1.5px solid var(--border);
+    border-radius: 18px; overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .faculty-header {
+    background: linear-gradient(135deg, var(--teal) 0%, var(--teal-light) 100%);
+    color: #fff; padding: 1.5rem 2rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .faculty-header .fac-icon { font-size: 2.2rem; }
+  .faculty-header h3 { font-size: 1.3rem; font-weight: 700; }
+  .faculty-header p { font-size: 0.85rem; opacity: 0.85; }
+
+  .majors-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1rem; padding: 1.8rem;
+  }
+  .major-pill {
+    background: var(--sage-soft);
+    border: 1.5px solid rgba(107,143,113,0.25);
+    border-radius: 12px; padding: 1rem 1.2rem;
+    text-align: center; cursor: pointer;
+    transition: all 0.22s; font-weight: 600; font-size: 0.9rem;
+  }
+  .major-pill:hover, .major-pill.active {
+    background: var(--teal); color: #fff;
+    border-color: var(--teal);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(10,112,117,0.25);
+  }
+  .major-pill .m-icon { font-size: 1.4rem; margin-bottom: 0.4rem; }
+
+  /* ── ENGLISH LIT COURSES ── */
+  #courses { background: var(--cream); }
+  .courses-heading {
+    display: flex; align-items: center; gap: 1rem;
+    background: var(--sage-soft);
+    border-right: 4px solid var(--sage);
+    border-radius: 12px; padding: 1.2rem 1.6rem;
+    margin-bottom: 2rem;
+    font-size: 1.2rem; font-weight: 700; color: var(--ink);
+  }
+  .courses-grid { display: grid; gap: 1.5rem; }
+  .course-card {
+    background: var(--card-bg);
+    border: 1.5px solid var(--border);
+    border-radius: 16px; padding: 1.8rem 2rem;
+    box-shadow: var(--shadow); transition: box-shadow 0.25s, transform 0.25s;
+    position: relative; overflow: hidden;
+  }
+  .course-card::before {
+    content: ''; position: absolute;
+    top: 0; right: 0; width: 5px; height: 100%;
+    background: var(--teal);
+    border-radius: 0 14px 14px 0;
+  }
+  .course-card:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-3px);
+  }
+  .course-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem; color: var(--teal); letter-spacing: 2px;
+    margin-bottom: 0.5rem;
+  }
+  .course-name {
+    font-size: 1.15rem; font-weight: 800; color: var(--ink);
+    margin-bottom: 0.8rem;
+  }
+  .course-desc {
+    font-size: 0.92rem; line-height: 1.8; color: var(--text-muted);
+    margin-bottom: 0.9rem;
+  }
+  .course-topics {
+    display: flex; flex-wrap: wrap; gap: 0.5rem;
+    margin-bottom: 0.9rem;
+  }
+  .topic-tag {
+    background: var(--amber-soft);
+    color: var(--ink); font-size: 0.75rem; font-weight: 600;
+    padding: 0.25rem 0.7rem; border-radius: 999px;
+    border: 1px solid rgba(232,168,56,0.3);
+  }
+  .course-quote {
+    background: var(--sage-soft);
+    border-right: 3px solid var(--sage);
+    border-radius: 8px; padding: 0.8rem 1rem;
+    font-style: italic; font-size: 0.88rem; color: var(--sage);
+    direction: ltr; text-align: left;
+  }
+
+  /* ── STUDENTS ── */
+  #students { background: #fff; }
+  .students-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  .student-card {
+    background: var(--card-bg);
+    border: 1.5px solid var(--border);
+    border-radius: 18px; padding: 1.6rem;
+    box-shadow: var(--shadow); transition: all 0.25s;
+    position: relative; overflow: hidden;
+  }
+  .student-card.real {
+    border-color: var(--teal);
+    background: linear-gradient(160deg, rgba(10,112,117,0.04) 0%, #fff 60%);
+  }
+  .student-card.real::after {
+    content: '★ حقيقي'; position: absolute; top: 1rem; left: 1rem;
+    background: var(--teal); color: #fff;
+    font-size: 0.65rem; font-weight: 700; letter-spacing: 1px;
+    padding: 0.2rem 0.6rem; border-radius: 999px;
+    font-family: 'Space Mono', monospace;
+  }
+  .student-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+  }
+  .student-avatar {
+    width: 60px; height: 60px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.6rem; margin-bottom: 1rem;
+    background: var(--amber-soft);
+  }
+  .student-name {
+    font-size: 1.15rem; font-weight: 800; color: var(--ink);
+    margin-bottom: 0.2rem;
+  }
+  .student-major {
+    font-size: 0.8rem; color: var(--teal); font-weight: 600;
+    margin-bottom: 0.7rem;
+  }
+  .skill-tags {
+    display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.8rem;
+  }
+  .skill-tag {
+    background: var(--rose-soft); color: var(--rose);
+    font-size: 0.72rem; font-weight: 700;
+    padding: 0.2rem 0.6rem; border-radius: 999px;
+    border: 1px solid rgba(201,104,104,0.2);
+  }
+  .student-desc {
+    font-size: 0.87rem; line-height: 1.7; color: var(--text-muted);
+    margin-bottom: 1rem;
+  }
+  .student-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    border-top: 1px solid var(--border); padding-top: 0.9rem; margin-top: 0.5rem;
+  }
+  .student-price {
+    font-family: 'Space Mono', monospace;
+    font-size: 1rem; font-weight: 700; color: var(--teal);
+  }
+  .btn-copy {
+    background: var(--ink); color: #fff;
+    font-size: 0.78rem; font-weight: 700;
+    padding: 0.45rem 1.1rem; border-radius: 999px;
+    border: none; cursor: pointer; transition: all 0.22s;
+    font-family: 'Space Mono', monospace;
+  }
+  .btn-copy:hover { background: var(--teal); transform: scale(1.04); }
+  .btn-copy.copied { background: var(--sage); }
+
+  /* ── SERVICES ── */
+  #services { background: var(--cream); }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  .service-card {
+    background: var(--card-bg);
+    border: 1.5px solid var(--border);
+    border-radius: 18px; padding: 2rem 1.8rem;
+    box-shadow: var(--shadow); text-align: center;
+    transition: all 0.25s;
+  }
+  .service-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+    border-color: var(--teal);
+  }
+  .service-icon { font-size: 2.8rem; margin-bottom: 1rem; }
+  .service-name {
+    font-size: 1.15rem; font-weight: 800; color: var(--ink);
+    margin-bottom: 0.6rem;
+  }
+  .service-desc { font-size: 0.88rem; line-height: 1.75; color: var(--text-muted); }
+
+  /* ── PRICING ── */
+  #pricing { background: linear-gradient(135deg, var(--teal) 0%, var(--teal-light) 100%); }
+  #pricing .section-tag { color: rgba(255,255,255,0.7); }
+  #pricing .section-title { color: #fff; }
+  #pricing .section-line { background: var(--amber); }
+  .pricing-card {
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(10px);
+    border: 1.5px solid rgba(255,255,255,0.25);
+    border-radius: 20px; padding: 2.5rem;
+    text-align: center; color: #fff; max-width: 440px;
+  }
+  .pricing-amount {
+    font-family: 'Space Mono', monospace;
+    font-size: 3.5rem; font-weight: 700;
+    line-height: 1; margin-bottom: 0.3rem;
+  }
+  .pricing-unit { font-size: 0.9rem; opacity: 0.8; margin-bottom: 1.5rem; }
+  .pricing-coming {
+    background: rgba(232,168,56,0.25);
+    border: 1.5px solid var(--amber);
+    border-radius: 12px; padding: 1rem 1.5rem;
+    font-size: 0.95rem; color: var(--amber);
+    font-weight: 700;
+  }
+  .pricing-row { display: flex; justify-content: center; }
+
+  /* ── SUPPORT ── */
+  #support { background: #fff; text-align: center; }
+  .support-box {
+    max-width: 500px; margin: 0 auto;
+    background: var(--rose-soft);
+    border: 1.5px solid rgba(201,104,104,0.2);
+    border-radius: 20px; padding: 3rem 2rem;
+  }
+  .support-icon { font-size: 3.5rem; margin-bottom: 1rem; }
+  .support-box h3 { font-size: 1.25rem; font-weight: 800; color: var(--ink); margin-bottom: 0.8rem; }
+  .support-box p { font-size: 0.95rem; color: var(--text-muted); line-height: 1.75; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--ink); color: rgba(255,255,255,0.6);
+    text-align: center; padding: 2rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem; letter-spacing: 0.5px;
+  }
+  footer span { color: var(--teal); }
+
+  /* ── TOAST ── */
+  #toast {
+    position: fixed; bottom: 2rem; right: 50%; transform: translateX(50%);
+    background: var(--teal); color: #fff;
+    font-weight: 700; font-size: 0.88rem;
+    padding: 0.7rem 1.8rem; border-radius: 999px;
+    box-shadow: 0 6px 24px rgba(10,112,117,0.35);
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s, bottom 0.3s;
+    z-index: 9999;
+    font-family: 'Space Mono', monospace;
+  }
+  #toast.show { opacity: 1; bottom: 2.5rem; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    .nav-links { display: none; }
+    .majors-grid { grid-template-columns: repeat(2, 1fr); }
+    .hero-title { font-size: 2.8rem; }
+    section { padding: 3.5rem 1.2rem; }
+  }
+
+  /* ── EXTRA NAV SCROLL ── */
+  .nav-links { overflow-x: auto; flex-wrap: nowrap; }
+  @media (max-width: 900px) { .nav-links { gap: 1rem; } }
+
+  /* ── NEW ANCHOR SECTIONS (placeholder style) ── */
+  .anchor-section { background: var(--cream); }
+  .anchor-section:nth-child(even) { background: #fff; }
+
+  /* ── LAW MAJOR STYLES ── */
+  #specializations { background: var(--cream); }
+  .law-faculty-header {
+    background: linear-gradient(135deg, #1A1A2E 0%, #2d2d4e 100%);
+    color: #fff; padding: 1.5rem 2rem;
+    display: flex; align-items: center; gap: 1rem;
+    border-radius: 18px 18px 0 0;
+  }
+  .law-faculty-header .fac-icon { font-size: 2.2rem; }
+  .law-faculty-header h3 { font-size: 1.3rem; font-weight: 700; }
+  .law-faculty-header p { font-size: 0.85rem; opacity: 0.85; }
+
+  .law-course-block {
+    background: var(--card-bg);
+    border: 1.5px solid var(--border);
+    border-radius: 16px; margin-bottom: 2rem;
+    box-shadow: var(--shadow); overflow: hidden;
+  }
+  .law-course-header {
+    background: linear-gradient(90deg, rgba(26,26,46,0.06) 0%, transparent 100%);
+    border-bottom: 1.5px solid var(--border);
+    padding: 1.2rem 1.8rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .law-course-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem; color: #fff; letter-spacing: 2px;
+    background: var(--ink); padding: 0.2rem 0.7rem; border-radius: 999px;
+  }
+  .law-course-title {
+    font-size: 1.1rem; font-weight: 800; color: var(--ink);
+  }
+  .law-course-body { padding: 1.5rem 1.8rem; }
+  .law-course-desc {
+    font-size: 0.92rem; line-height: 1.8; color: var(--text-muted);
+    margin-bottom: 0.8rem;
+  }
+  .law-examples {
+    background: var(--amber-soft);
+    border: 1px solid rgba(232,168,56,0.3);
+    border-radius: 10px; padding: 0.7rem 1rem;
+    font-size: 0.85rem; color: var(--ink); font-weight: 600;
+    margin-bottom: 1.5rem;
+  }
+  .law-students-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem; letter-spacing: 2px; color: var(--teal);
+    text-transform: uppercase; margin-bottom: 1rem;
+    border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;
+  }
+  .law-students-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.2rem;
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">SkillSwap JO</div>
+  <ul class="nav-links">
+    <li><a href="#executive-summary">الملخص التنفيذي</a></li>
+    <li><a href="#vision-mission">الرؤية والرسالة</a></li>
+    <li><a href="#swot">تحليل SWOT</a></li>
+    <li><a href="#business-model">نموذج العمل التجاري</a></li>
+    <li><a href="#specializations">التخصصات</a></li>
+    <li><a href="#universities">الكليات</a></li>
+    <li><a href="#courses">المواد</a></li>
+    <li><a href="#students">الطلاب</a></li>
+    <li><a href="#services">الخدمات</a></li>
+    <li><a href="#pricing">الأسعار</a></li>
+    <li><a href="#support">الدعم</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-deco a"></div>
+  <div class="hero-deco b"></div>
+  <div class="hero-tag">JORDAN · UNIVERSITY PLATFORM</div>
+  <h1 class="hero-title"><span>Skill</span> Swap JO</h1>
+  <p class="hero-subtitle-ar">منصة طلابية لتبادل المهارات والمساعدة الأكاديمية</p>
+  <p class="hero-desc">
+    هذه المنصة تساعد الطلاب على تبادل المهارات، وفهم مواد دراستهم بشكل أعمق،
+    وكسب المال من خلال تعليم الآخرين ما يجيدونه. ابدأ رحلتك الأكاديمية الذكية اليوم.
+  </p>
+  <a href="#universities" class="btn-start">ابدأ الآن ↓</a>
+</section>
+
+<!-- UNIVERSITIES & MAJORS -->
+<section id="universities">
+  <div class="section-inner">
+    <p class="section-tag">FACULTIES & MAJORS</p>
+    <h2 class="section-title">الكليات والتخصصات</h2>
+    <div class="section-line"></div>
+
+    <div class="coming-soon-card">
+      <div class="icon">🏛️</div>
+      <div>جميع الكليات والتخصصات</div>
+      <span class="coming-soon-badge">COMING SOON</span>
+    </div>
+
+    <div class="faculty-card">
+      <div class="faculty-header">
+        <div class="fac-icon">🌐</div>
+        <div>
+          <h3>كلية اللغات الأجنبية</h3>
+          <p>Faculty of Foreign Languages</p>
+        </div>
+      </div>
+      <div class="majors-grid">
+        <div class="major-pill active" onclick="scrollToCourses()">
+          <div class="m-icon">📖</div>
+          الأدب الإنجليزي
+        </div>
+        <div class="major-pill">
+          <div class="m-icon">🔄</div>
+          الترجمة
+        </div>
+        <div class="major-pill">
+          <div class="m-icon">🔬</div>
+          اللغويات
+        </div>
+        <div class="major-pill">
+          <div class="m-icon">🇫🇷</div>
+          اللغة الفرنسية
+        </div>
+        <div class="major-pill">
+          <div class="m-icon">🇩🇪</div>
+          اللغة الألمانية
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ENGLISH LITERATURE COURSES -->
+<section id="courses">
+  <div class="section-inner">
+    <p class="section-tag">ENGLISH LITERATURE</p>
+    <h2 class="section-title">مواد التخصص</h2>
+    <div class="section-line"></div>
+
+    <div class="courses-heading">
+      📚 الأدب الإنجليزي – 132 ساعة معتمدة
+      <span style="margin-right:auto; background:var(--teal); color:#fff; font-size:0.7rem; padding:0.2rem 0.8rem; border-radius:999px; font-family:'Space Mono',monospace;">5 مواد عينة</span>
+    </div>
+
+    <div class="courses-grid">
+
+      <!-- Course 1 -->
+      <div class="course-card">
+        <div class="course-num">ENGL 101</div>
+        <div class="course-name">Introduction to English Literature</div>
+        <div class="course-desc">
+          هذه المادة هي البوابة الأولى لعالم الأدب الإنجليزي. تتناول المادة تاريخ الأدب الإنجليزي من العصور القديمة حتى العصر الحديث، وتعرّف الطالب على الأجناس الأدبية المختلفة كالشعر والرواية والمسرح. يتعلم الطالب كيف يقرأ النص بعين ناقدة ويحلله بشكل أكاديمي دقيق.
+        </div>
+        <div class="course-topics">
+          <span class="topic-tag">الأجناس الأدبية</span>
+          <span class="topic-tag">التحليل النقدي</span>
+          <span class="topic-tag">تاريخ الأدب</span>
+          <span class="topic-tag">القراءة التأويلية</span>
+        </div>
+        <div class="course-quote">
+          "Literature is the art of discovering something extraordinary about ordinary people, and saying with ordinary words something extraordinary." — Boris Pasternak
+        </div>
+      </div>
+
+      <!-- Course 2 -->
+      <div class="course-card">
+        <div class="course-num">ENGL 215</div>
+        <div class="course-name">Shakespeare: Plays & Poetry</div>
+        <div class="course-desc">
+          دراسة متعمقة لأعمال وليام شكسبير، أعظم كتّاب اللغة الإنجليزية على مر العصور. تشمل المادة تحليل مسرحيات مثل "هاملت" و"عطيل" و"روميو وجولييت"، إضافة إلى السونيتات الشعرية. يدرس الطالب الصراع الدرامي، وبناء الشخصية، والبُعد الفلسفي في أعمال شكسبير.
+        </div>
+        <div class="course-topics">
+          <span class="topic-tag">هاملت</span>
+          <span class="topic-tag">التراجيديا</span>
+          <span class="topic-tag">الكوميديا</span>
+          <span class="topic-tag">السونيتات</span>
+        </div>
+        <div class="course-quote">
+          "To be, or not to be, that is the question." — Hamlet, Act III
+        </div>
+      </div>
+
+      <!-- Course 3 -->
+      <div class="course-card">
+        <div class="course-num">ENGL 320</div>
+        <div class="course-name">The Victorian Novel</div>
+        <div class="course-desc">
+          تستكشف هذه المادة الرواية الإنجليزية في العصر الفيكتوري (1830–1901)، وهو عصر ازدهرت فيه الرواية الاجتماعية. تُدرَس أعمال كتّاب بارزين مثل تشارلز ديكنز وجورج إليوت وتوماس هاردي. تتمحور المادة حول الطبقية الاجتماعية، والمرأة، والصناعة، والأخلاق في إنجلترا القرن التاسع عشر.
+        </div>
+        <div class="course-topics">
+          <span class="topic-tag">ديكنز</span>
+          <span class="topic-tag">الطبقية</span>
+          <span class="topic-tag">النقد الاجتماعي</span>
+          <span class="topic-tag">المرأة الفيكتورية</span>
+        </div>
+        <div class="course-quote">
+          "It was the best of times, it was the worst of times." — A Tale of Two Cities, Dickens
+        </div>
+      </div>
+
+      <!-- Course 4 -->
+      <div class="course-card">
+        <div class="course-num">ENGL 410</div>
+        <div class="course-name">Postcolonial Literature</div>
+        <div class="course-desc">
+          تتناول هذه المادة الأدب الناشئ في مرحلة ما بعد الاستعمار في أفريقيا وآسيا والكاريبي. تركز على أسئلة الهوية والانتماء والمقاومة الثقافية من خلال روايات وقصائد كتّاب مثل Chinua Achebe وFrantz Fanon. يكتسب الطالب مفاهيم نظرية مهمة كالهيمنة والسرد المضاد والهوية الهجينة.
+        </div>
+        <div class="course-topics">
+          <span class="topic-tag">ما بعد الاستعمار</span>
+          <span class="topic-tag">الهوية</span>
+          <span class="topic-tag">المقاومة</span>
+          <span class="topic-tag">الهجنة الثقافية</span>
+        </div>
+        <div class="course-quote">
+          "Until the lion learns to write, every story will glorify the hunter." — African Proverb
+        </div>
+      </div>
+
+      <!-- Course 5 -->
+      <div class="course-card">
+        <div class="course-num">ENGL 450</div>
+        <div class="course-name">Literary Theory & Criticism</div>
+        <div class="course-desc">
+          مادة نظرية متقدمة تعرّف الطالب على المناهج النقدية الكبرى في تحليل الأدب، مثل البنيوية والتفكيكية والنقد النسوي ونظرية القارئ. تُمكّن هذه المادة الطالب من تطبيق أطر تحليلية مختلفة على أي نص أدبي، مما يعمّق الفهم ويرفع مستوى الكتابة الأكاديمية.
+        </div>
+        <div class="course-topics">
+          <span class="topic-tag">البنيوية</span>
+          <span class="topic-tag">التفكيكية</span>
+          <span class="topic-tag">النقد النسوي</span>
+          <span class="topic-tag">نظرية القارئ</span>
+        </div>
+        <div class="course-quote">
+          "There is nothing outside of the text." — Jacques Derrida
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- STUDENTS -->
+<section id="students">
+  <div class="section-inner">
+    <p class="section-tag">SKILL EXCHANGE</p>
+    <h2 class="section-title">الطلاب المتاحون لتبادل المهارات</h2>
+    <div class="section-line"></div>
+
+    <div class="students-grid">
+
+      <!-- Student 1: REAL -->
+      <div class="student-card real">
+        <div class="student-avatar">👨‍💻</div>
+        <div class="student-name">يوسف</div>
+        <div class="student-major">الأدب الإنجليزي</div>
+        <div class="skill-tags">
+          <span class="skill-tag">تدريس الإنجليزية</span>
+          <span class="skill-tag">برمجة</span>
+        </div>
+        <div class="student-desc">يساعد الطلاب على فهم مواد الأدب الإنجليزي وأساسيات البرمجة بطريقة سهلة وممتعة.</div>
+        <div class="student-footer">
+          <div class="student-price">10 JOD / ساعة</div>
+          <button class="btn-copy" onclick="copyPhone('0781775489', this)">📋 انسخ الرقم</button>
+        </div>
+      </div>
+
+      <!-- Student 2 -->
+      <div class="student-card">
+        <div class="student-avatar">👩‍🎓</div>
+        <div class="student-name">سارة الخالدي</div>
+        <div class="student-major">الترجمة</div>
+        <div class="skill-tags">
+          <span class="skill-tag">ترجمة عربي–إنجليزي</span>
+          <span class="skill-tag">تدقيق لغوي</span>
+        </div>
+        <div class="student-desc">تقدم خدمات الترجمة الاحترافية والمساعدة في مواد الترجمة التحريرية والشفهية.</div>
+        <div class="student-footer">
+          <div class="student-price">9 JOD / ساعة</div>
+          <button class="btn-copy" onclick="copyPhone('0795512340', this)">📋 انسخ الرقم</button>
+        </div>
+      </div>
+
+      <!-- Student 3 -->
+      <div class="student-card">
+        <div class="student-avatar">👨‍🏫</div>
+        <div class="student-name">أحمد النمري</div>
+        <div class="student-major">اللغويات</div>
+        <div class="skill-tags">
+          <span class="skill-tag">علم الصوتيات</span>
+          <span class="skill-tag">تحليل النصوص</span>
+        </div>
+        <div class="student-desc">يشرح مفاهيم اللغويات المعقدة كالصرف والنحو والصوتيات بأسلوب مبسّط ومفهوم.</div>
+        <div class="student-footer">
+          <div class="student-price">10 JOD / ساعة</div>
+          <button class="btn-copy" onclick="copyPhone('0796234501', this)">📋 انسخ الرقم</button>
+        </div>
+      </div>
+
+      <!-- Student 4 -->
+      <div class="student-card">
+        <div class="student-avatar">👩‍🎨</div>
+        <div class="student-name">لينا عزام</div>
+        <div class="student-major">اللغة الفرنسية</div>
+        <div class="skill-tags">
+          <span class="skill-tag">محادثة فرنسية</span>
+          <span class="skill-tag">قواعد</span>
+        </div>
+        <div class="student-desc">تساعد الطلاب على إتقان اللغة الفرنسية تحدثاً وكتابةً، مع التركيز على النطق الصحيح.</div>
+        <div class="student-footer">
+          <div class="student-price">8 JOD / ساعة</div>
+          <button class="btn-copy" onclick="copyPhone('0788341270', this)">📋 انسخ الرقم</button>
+        </div>
+      </div>
+
+      <!-- Student 5 -->
+      <div class="student-card">
+        <div class="student-avatar">👨‍🔬</div>
+        <div class="student-name">كريم بطاينة</div>
+        <div class="student-major">اللغة الألمانية</div>
+        <div class="skill-tags">
+          <span class="skill-tag">A1 – B2 ألماني</span>
+          <span class="skill-tag">ترجمة</span>
+        </div>
+        <div class="student-desc">يعلّم مستويات الألمانية من المبتدئ إلى المتوسط، ويساعد في الاستعداد لامتحانات Goethe.</div>
+        <div class="student-footer">
+          <div class="student-price">12 JOD / ساعة</div>
+          <button class="btn-copy" onclick="copyPhone('0791089432', this)">📋 انسخ الرقم</button>
+        </div>
+      </div>
+
+      <!-- Student 6 -->
+      <div class="student-card">
+        <div class="student-avatar">👩‍💼</div>
+        <div class="student-name">نور الهواري</div>
+        <div class="student-major">الأدب الإنجليزي</div>
+        <div class="skill-tags">
+          <span class="skill-tag">كتابة أكاديمية</span>
+          <span class="skill-tag">تحليل أدبي</span>
+        </div>
+        <div class="student-desc">متخصصة في مساعدة الطلاب على كتابة المقالات الأكاديمية وتحليل النصوص الأدبية بعمق.</div>
+        <div class="student-footer">
+          <div class="student-price">9 JOD / ساعة</div>
+          <button class="btn-copy" onclick="copyPhone('0779564821', this)">📋 انسخ الرقم</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-inner">
+    <p class="section-tag">WHAT WE OFFER</p>
+    <h2 class="section-title">خدماتنا</h2>
+    <div class="section-line"></div>
+
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">🔁</div>
+        <div class="service-name">تبادل المهارات</div>
+        <div class="service-desc">تواصل مع طلاب يمتلكون مهارات تحتاجها، وشارك معهم ما تجيده أنت. تعلّم بطريقة تبادلية وعملية بدون تكلفة أحياناً.</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">📝</div>
+        <div class="service-name">شرح المواد الدراسية</div>
+        <div class="service-desc">احصل على شرح مبسّط لمواد جامعتك من طلاب اجتازوها بنجاح. فهم حقيقي وليس حفظاً أعمى.</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🎓</div>
+        <div class="service-name">الدعم الأكاديمي</div>
+        <div class="service-desc">مساعدة في المشاريع، والبحوث، وكتابة التقارير الأكاديمية بمستوى جامعي احترافي.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="section-inner">
+    <p class="section-tag">PRICING MODEL</p>
+    <h2 class="section-title">الأسعار والاشتراكات</h2>
+    <div class="section-line"></div>
+    <div class="pricing-row">
+      <div class="pricing-card">
+        <div class="pricing-amount">10 JOD</div>
+        <div class="pricing-unit">متوسط السعر للساعة الواحدة</div>
+        <div style="width:40px;height:2px;background:rgba(255,255,255,0.3);margin:0 auto 1.5rem;border-radius:2px;"></div>
+        <div class="pricing-coming">
+          ⭐ الاشتراكات المميزة (Premium) — قريباً
+        </div>
+        <p style="margin-top:1rem; font-size:0.82rem; opacity:0.7; line-height:1.7;">
+          ستشمل: مواد مخصصة، وصول غير محدود للطلاب المتخصصين، وجلسات مجدولة.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SUPPORT -->
+<section id="support">
+  <div class="section-inner">
+    <p class="section-tag">HELP CENTER</p>
+    <h2 class="section-title">الدعم الفني</h2>
+    <div class="section-line"></div>
+    <div class="support-box">
+      <div class="support-icon">🛠️</div>
+      <h3>الدعم الفني — قريباً</h3>
+      <p>نحن نعمل على بناء نظام دعم متكامل لمساعدتك في أي مشكلة تقنية أو استفسار. يرجى متابعة المنصة لمزيد من التحديثات.</p>
+    </div>
+  </div>
+</section>
+
+<!-- EXECUTIVE SUMMARY -->
+<section id="executive-summary" class="anchor-section">
+  <div class="section-inner">
+    <p class="section-tag">EXECUTIVE SUMMARY</p>
+    <h2 class="section-title">الملخص التنفيذي</h2>
+    <div class="section-line"></div>
+    <div style="background:var(--card-bg);border:1.5px solid var(--border);border-radius:16px;padding:2rem;box-shadow:var(--shadow);max-width:750px;">
+      <p style="font-size:1rem;line-height:2;color:var(--text-muted);">
+        Skill Swap JO هي منصة طلابية جامعية أردنية تهدف إلى ربط الطلاب ببعضهم البعض لتبادل المهارات الأكاديمية والعملية. تتيح المنصة للطلاب تقديم خدمات الشرح والتدريس مقابل أجر رمزي، مما يدعم التعلم التشاركي ويعزز الاكتفاء الذاتي الأكاديمي داخل الجامعات الأردنية.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- VISION & MISSION -->
+<section id="vision-mission" style="background:#fff;">
+  <div class="section-inner">
+    <p class="section-tag">VISION & MISSION</p>
+    <h2 class="section-title">الرؤية والرسالة</h2>
+    <div class="section-line"></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5rem;">
+      <div style="background:linear-gradient(135deg,var(--teal),var(--teal-light));border-radius:16px;padding:2rem;color:#fff;box-shadow:var(--shadow);">
+        <div style="font-size:2rem;margin-bottom:0.8rem;">🌟</div>
+        <div style="font-family:'Space Mono',monospace;font-size:0.7rem;letter-spacing:2px;opacity:0.8;margin-bottom:0.5rem;">VISION</div>
+        <h3 style="font-size:1.15rem;font-weight:800;margin-bottom:0.7rem;">الرؤية</h3>
+        <p style="font-size:0.9rem;line-height:1.8;opacity:0.9;">أن نكون المنصة الطلابية الأولى في الأردن التي تُحوّل كل طالب إلى مصدر معرفة ودخل في آنٍ واحد.</p>
+      </div>
+      <div style="background:var(--card-bg);border:1.5px solid var(--border);border-radius:16px;padding:2rem;box-shadow:var(--shadow);">
+        <div style="font-size:2rem;margin-bottom:0.8rem;">🎯</div>
+        <div style="font-family:'Space Mono',monospace;font-size:0.7rem;letter-spacing:2px;color:var(--teal);margin-bottom:0.5rem;">MISSION</div>
+        <h3 style="font-size:1.15rem;font-weight:800;color:var(--ink);margin-bottom:0.7rem;">الرسالة</h3>
+        <p style="font-size:0.9rem;line-height:1.8;color:var(--text-muted);">توفير بيئة رقمية آمنة وسهلة تمكّن الطلاب من تبادل المعرفة، وتحقيق النجاح الأكاديمي المشترك بأسعار في متناول الجميع.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SWOT -->
+<section id="swot" class="anchor-section">
+  <div class="section-inner">
+    <p class="section-tag">STRATEGIC ANALYSIS</p>
+    <h2 class="section-title">تحليل SWOT</h2>
+    <div class="section-line"></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:1.2rem;">
+      <div style="background:var(--sage-soft);border:1.5px solid rgba(107,143,113,0.3);border-radius:14px;padding:1.5rem;">
+        <div style="font-size:1.5rem;margin-bottom:0.5rem;">💪</div>
+        <div style="font-weight:800;color:var(--sage);margin-bottom:0.5rem;">نقاط القوة</div>
+        <p style="font-size:0.86rem;line-height:1.75;color:var(--text-muted);">تكلفة منخفضة، شبكة طلابية واسعة، محتوى أكاديمي متخصص، سهولة الاستخدام.</p>
+      </div>
+      <div style="background:var(--amber-soft);border:1.5px solid rgba(232,168,56,0.3);border-radius:14px;padding:1.5rem;">
+        <div style="font-size:1.5rem;margin-bottom:0.5rem;">⚠️</div>
+        <div style="font-weight:800;color:#b07d10;margin-bottom:0.5rem;">نقاط الضعف</div>
+        <p style="font-size:0.86rem;line-height:1.75;color:var(--text-muted);">مشروع في مرحلة النموذج الأولي، محدودية الانتشار حالياً، يحتاج تمويل لاحق.</p>
+      </div>
+      <div style="background:rgba(10,112,117,0.07);border:1.5px solid rgba(10,112,117,0.2);border-radius:14px;padding:1.5rem;">
+        <div style="font-size:1.5rem;margin-bottom:0.5rem;">🚀</div>
+        <div style="font-weight:800;color:var(--teal);margin-bottom:0.5rem;">الفرص</div>
+        <p style="font-size:0.86rem;line-height:1.75;color:var(--text-muted);">نمو التعليم الرقمي، الطلب المتزايد على التدريس الخصوصي، دعم ريادة الأعمال الطلابية.</p>
+      </div>
+      <div style="background:var(--rose-soft);border:1.5px solid rgba(201,104,104,0.2);border-radius:14px;padding:1.5rem;">
+        <div style="font-size:1.5rem;margin-bottom:0.5rem;">🛡️</div>
+        <div style="font-weight:800;color:var(--rose);margin-bottom:0.5rem;">التهديدات</div>
+        <p style="font-size:0.86rem;line-height:1.75;color:var(--text-muted);">المنافسة من منصات عالمية، تحديات ضمان جودة الطلاب المدرّسين.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BUSINESS MODEL -->
+<section id="business-model" style="background:#fff;">
+  <div class="section-inner">
+    <p class="section-tag">BUSINESS MODEL</p>
+    <h2 class="section-title">نموذج العمل التجاري</h2>
+    <div class="section-line"></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.4rem;">
+      <div style="background:var(--card-bg);border:1.5px solid var(--border);border-radius:16px;padding:1.8rem;box-shadow:var(--shadow);text-align:center;">
+        <div style="font-size:2.5rem;margin-bottom:0.8rem;">💰</div>
+        <div style="font-weight:800;font-size:1rem;color:var(--ink);margin-bottom:0.5rem;">الإيرادات</div>
+        <p style="font-size:0.86rem;line-height:1.75;color:var(--text-muted);">عمولة بسيطة على كل جلسة + اشتراكات مميزة مستقبلاً.</p>
+      </div>
+      <div style="background:var(--card-bg);border:1.5px solid var(--border);border-radius:16px;padding:1.8rem;box-shadow:var(--shadow);text-align:center;">
+        <div style="font-size:2.5rem;margin-bottom:0.8rem;">👥</div>
+        <div style="font-weight:800;font-size:1rem;color:var(--ink);margin-bottom:0.5rem;">الشريحة المستهدفة</div>
+        <p style="font-size:0.86rem;line-height:1.75;color:var(--text-muted);">طلاب الجامعات الأردنية في جميع التخصصات والمستويات.</p>
+      </div>
+      <div style="background:var(--card-bg);border:1.5px solid var(--border);border-radius:16px;padding:1.8rem;box-shadow:var(--shadow);text-align:center;">
+        <div style="font-size:2.5rem;margin-bottom:0.8rem;">📲</div>
+        <div style="font-weight:800;font-size:1rem;color:var(--ink);margin-bottom:0.5rem;">قناة التوزيع</div>
+        <p style="font-size:0.86rem;line-height:1.75;color:var(--text-muted);">موقع إلكتروني + تطبيق جوال (قيد التطوير) + قنوات واتساب جامعية.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SPECIALIZATIONS: LAW -->
+<section id="specializations">
+  <div class="section-inner">
+    <p class="section-tag">SPECIALIZATIONS</p>
+    <h2 class="section-title">التخصصات</h2>
+    <div class="section-line"></div>
+
+    <!-- Law Faculty Card -->
+    <div class="faculty-card" style="margin-bottom:2.5rem;">
+      <div class="law-faculty-header">
+        <div class="fac-icon">⚖️</div>
+        <div>
+          <h3>تخصص: الحقوق</h3>
+          <p>Faculty of Law – كلية الحقوق</p>
+        </div>
+      </div>
+
+      <div style="padding:1.8rem;">
+
+        <!-- Course 1: القانون المدني -->
+        <div class="law-course-block">
+          <div class="law-course-header">
+            <span class="law-course-num">LAW 101</span>
+            <span class="law-course-title">القانون المدني</span>
+          </div>
+          <div class="law-course-body">
+            <p class="law-course-desc">مادة تركز على تنظيم العلاقات بين الأفراد مثل العقود والالتزامات. تشرح كيف يُنظّم القانون التعاملات اليومية بين الناس، وتُعرّف الطالب على مبادئ الإلزام القانوني وآليات حل النزاعات المدنية.</p>
+            <div class="law-examples">📌 أمثلة: عقود البيع، الإيجار، عقود العمل، التعويضات المدنية</div>
+            <div class="law-students-label">الطلاب المتاحون لشرح هذه المادة</div>
+            <div class="law-students-grid">
+
+              <div class="student-card">
+                <div class="student-avatar">👨‍⚖️</div>
+                <div class="student-name">عمر الزيود</div>
+                <div class="student-major">حقوق</div>
+                <div class="skill-tags"><span class="skill-tag">قانون مدني</span><span class="skill-tag">عقود</span></div>
+                <div class="student-desc">يساعد في تبسيط مفاهيم القانون المدني وشرح الأمثلة التطبيقية على العقود والالتزامات.</div>
+                <div class="student-footer">
+                  <div class="student-price">10 دنانير / ساعة</div>
+                  <button class="btn-copy" onclick="copyPhone('0791234560', this)">📋 انسخ الرقم</button>
+                </div>
+              </div>
+
+              <div class="student-card">
+                <div class="student-avatar">👩‍⚖️</div>
+                <div class="student-name">رنا المجالي</div>
+                <div class="student-major">حقوق</div>
+                <div class="skill-tags"><span class="skill-tag">التزامات</span><span class="skill-tag">نزاعات مدنية</span></div>
+                <div class="student-desc">متخصصة في شرح نظرية الالتزام والمسؤولية المدنية، وتساعد الطلاب على فهم النصوص القانونية.</div>
+                <div class="student-footer">
+                  <div class="student-price">9 دنانير / ساعة</div>
+                  <button class="btn-copy" onclick="copyPhone('0786543210', this)">📋 انسخ الرقم</button>
+                </div>
+              </div>
+
+              <div class="student-card">
+                <div class="student-avatar">👨‍🎓</div>
+                <div class="student-name">خالد العبادي</div>
+                <div class="student-major">حقوق</div>
+                <div class="skill-tags"><span class="skill-tag">عقود البيع</span><span class="skill-tag">الإيجار</span></div>
+                <div class="student-desc">يشرح أنواع العقود المدنية وشروط صحتها بأسلوب مبسط مع أمثلة من الحياة اليومية.</div>
+                <div class="student-footer">
+                  <div class="student-price">10 دنانير / ساعة</div>
+                  <button class="btn-copy" onclick="copyPhone('0798765432', this)">📋 انسخ الرقم</button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Course 2: القانون الجنائي -->
+        <div class="law-course-block">
+          <div class="law-course-header">
+            <span class="law-course-num">LAW 201</span>
+            <span class="law-course-title">القانون الجنائي</span>
+          </div>
+          <div class="law-course-body">
+            <p class="law-course-desc">تتناول الجرائم والعقوبات وكيفية تطبيق القانون على المخالفين. تدرس هذه المادة أركان الجريمة وأنواعها، وتُعرّف الطالب على إجراءات التقاضي الجنائي ومبادئ العدالة الجنائية في النظام القانوني الأردني.</p>
+            <div class="law-examples">📌 أمثلة: السرقة، الاحتيال، الإيذاء الجسدي، جرائم الإنترنت</div>
+            <div class="law-students-label">الطلاب المتاحون لشرح هذه المادة</div>
+            <div class="law-students-grid">
+
+              <div class="student-card">
+                <div class="student-avatar">🧑‍💼</div>
+                <div class="student-name">يزن الشوابكة</div>
+                <div class="student-major">حقوق</div>
+                <div class="skill-tags"><span class="skill-tag">قانون جنائي</span><span class="skill-tag">جرائم</span></div>
+                <div class="student-desc">يشرح أركان الجريمة وأنواع العقوبات ويساعد الطلاب على فهم التمييز بين الجرائم والمخالفات.</div>
+                <div class="student-footer">
+                  <div class="student-price">11 دنانير / ساعة</div>
+                  <button class="btn-copy" onclick="copyPhone('0771234987', this)">📋 انسخ الرقم</button>
+                </div>
+              </div>
+
+              <div class="student-card">
+                <div class="student-avatar">👩‍💼</div>
+                <div class="student-name">سلمى الطراونة</div>
+                <div class="student-major">حقوق</div>
+                <div class="skill-tags"><span class="skill-tag">إجراءات جزائية</span><span class="skill-tag">عقوبات</span></div>
+                <div class="student-desc">تساعد في فهم قانون أصول المحاكمات الجزائية وكيفية تطبيق العقوبة على الجرائم المختلفة.</div>
+                <div class="student-footer">
+                  <div class="student-price">10 دنانير / ساعة</div>
+                  <button class="btn-copy" onclick="copyPhone('0796012345', this)">📋 انسخ الرقم</button>
+                </div>
+              </div>
+
+              <div class="student-card">
+                <div class="student-avatar">👨‍🏫</div>
+                <div class="student-name">فادي الحوراني</div>
+                <div class="student-major">حقوق</div>
+                <div class="skill-tags"><span class="skill-tag">مسؤولية جنائية</span><span class="skill-tag">دفاع</span></div>
+                <div class="student-desc">يشرح أسباب الإباحة وموانع المسؤولية الجنائية بأمثلة واقعية وحالات دراسية مبسّطة.</div>
+                <div class="student-footer">
+                  <div class="student-price">12 دنانير / ساعة</div>
+                  <button class="btn-copy" onclick="copyPhone('0789876543', this)">📋 انسخ الرقم</button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Course 3: القانون الدستوري -->
+        <div class="law-course-block">
+          <div class="law-course-header">
+            <span class="law-course-num">LAW 301</span>
+            <span class="law-course-title">القانون الدستوري</span>
+          </div>
+          <div class="law-course-body">
+            <p class="law-course-desc">يشرح نظام الحكم في الدولة والسلطات والعلاقة بينها. يتناول مفهوم الدستور ونشأته، وتوزيع السلطات التشريعية والتنفيذية والقضائية، وحقوق الأفراد الدستورية في إطار المنظومة القانونية الأردنية.</p>
+            <div class="law-examples">📌 أمثلة: السلطات الثلاث، الدستور الأردني، الحقوق والحريات العامة، مجلس النواب</div>
+            <div class="law-students-label">الطلاب المتاحون لشرح هذه المادة</div>
+            <div class="law-students-grid">
+
+              <div class="student-card">
+                <div class="student-avatar">🧑‍⚖️</div>
+                <div class="student-name">تامر النسور</div>
+                <div class="student-major">حقوق</div>
+                <div class="skill-tags"><span class="skill-tag">قانون دستوري</span><span class="skill-tag">سلطات الدولة</span></div>
+                <div class="student-desc">يشرح بنية الدستور الأردني وتوزيع السلطات بأسلوب واضح ومقارن مع دساتير عربية أخرى.</div>
+                <div class="student-footer">
+                  <div class="student-price">10 دنانير / ساعة</div>
+                  <button class="btn-copy" onclick="copyPhone('0792345678', this)">📋 انسخ الرقم</button>
+                </div>
+              </div>
+
+              <div class="student-card">
+                <div class="student-avatar">👩‍🎓</div>
+                <div class="student-name">هبة القضاة</div>
+                <div class="student-major">حقوق</div>
+                <div class="skill-tags"><span class="skill-tag">حقوق دستورية</span><span class="skill-tag">حريات عامة</span></div>
+                <div class="student-desc">تساعد في فهم الحقوق الدستورية المكفولة للمواطنين وآليات حمايتها أمام القضاء الدستوري.</div>
+                <div class="student-footer">
+                  <div class="student-price">9 دنانير / ساعة</div>
+                  <button class="btn-copy" onclick="copyPhone('0781098765', this)">📋 انسخ الرقم</button>
+                </div>
+              </div>
+
+              <div class="student-card">
+                <div class="student-avatar">👨‍💻</div>
+                <div class="student-name">معاذ الرقاد</div>
+                <div class="student-major">حقوق</div>
+                <div class="skill-tags"><span class="skill-tag">نظام الحكم</span><span class="skill-tag">السلطة التشريعية</span></div>
+                <div class="student-desc">يشرح عمل مجلس النواب والأعيان ودور الملكية الدستورية في النظام الأردني بشكل مبسط.</div>
+                <div class="student-footer">
+                  <div class="student-price">10 دنانير / ساعة</div>
+                  <button class="btn-copy" onclick="copyPhone('0775432109', this)">📋 انسخ الرقم</button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div><!-- end padding wrapper -->
+    </div><!-- end faculty-card -->
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>Prototype Project — <span>Skill Swap JO</span> · منصة طلابية جامعية · Jordan 🇯🇴</p>
+</footer>
+
+<!-- TOAST -->
+<div id="toast">✅ تم نسخ الرقم!</div>
+
+<script>
+  function copyPhone(num, btn) {
+    navigator.clipboard.writeText(num).then(() => {
+      btn.textContent = '✅ تم النسخ!';
+      btn.classList.add('copied');
+      showToast();
+      setTimeout(() => {
+        btn.textContent = '📋 انسخ الرقم';
+        btn.classList.remove('copied');
+      }, 2500);
+    }).catch(() => {
+      // Fallback for older browsers
+      const ta = document.createElement('textarea');
+      ta.value = num;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.focus(); ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      btn.textContent = '✅ تم النسخ!';
+      btn.classList.add('copied');
+      showToast();
+      setTimeout(() => {
+        btn.textContent = '📋 انسخ الرقم';
+        btn.classList.remove('copied');
+      }, 2500);
+    });
+  }
+
+  function showToast() {
+    const t = document.getElementById('toast');
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
+  function scrollToCourses() {
+    document.getElementById('courses').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // Animate on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.course-card, .student-card, .service-card, .law-course-block').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(24px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease, box-shadow 0.25s, border-color 0.25s';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
